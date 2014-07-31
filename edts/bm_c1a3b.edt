@@ -1,0 +1,158 @@
+bm_c1a3b
+{
+	console
+	{
+		sv_turbophysics "0"
+	}
+	entity
+	{
+//TEMP PLACEHOLDERS
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_female" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_eli" values {classname "npc_eli"} }
+		edit {classname "npc_human_scientist_kleiner" values {classname "npc_kleiner"} }
+		edit {classname "npc_alien_slave" values {classname "npc_vortigaunt"} }
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_zombie_security" values {classname "npc_zombine"} }
+		edit {classname "npc_zombie_scientist_torso" values {classname "npc_zombie_torso"} }
+		edit {classname "npc_zombie_scientist" values {classname "npc_zombie"} }
+		edit {classname "prop_flare" values {classname "prop_physics" model "models/props_junk/flare.mdl"} }
+		edit {classname "item_ammo_glock" values {classname "item_ammo_pistol"} }
+		edit {classname "item_weapon_crowbar" values {classname "weapon_crowbar"} }
+		edit {classname "item_weapon_glock" values {classname "weapon_pistol"} }
+		edit {classname "item_weapon_frag" values {classname "weapon_frag"} }
+		edit {classname "item_crate" values {classname "item_item_crate"} }
+		edit {classname "item_weapon_357" values {classname "weapon_357"} }
+		edit {classname "npc_sentry_ceiling" values {classname "npc_turret_ceiling" spawnflags "32"} }
+		edit {classname "fog_volume" values {classname "func_smokevolume"} }
+		edit {classname "npc_human_grunt" values {classname "npc_combine_s"} }
+		edit {classname "npc_sentry_ground" values {classname "npc_turret_floor" spawnflags "0"} }
+		edit {classname "item_weapon_mp5" values {classname "weapon_mp5k"} }
+		edit {classname "item_weapon_shotgun" values {classname "weapon_shotgun"} }
+		edit {classname "grenade_tripmine" values {classname "weapon_slam"} }
+		edit {classname "item_ammo_mp5" values {classname "item_ammo_smg1"} }
+		edit {classname "item_ammo_shotgun" values {classname "item_box_buckshot"} }
+		edit {classname "item_grenade_mp5" values {classname " item_ammo_smg1_grenade"} }
+		edit {classname "func_conveyor_bms" values {classname "func_conveyor"} }
+		edit {classname "npc_human_commander" values {classname "npc_combine_s" model "models/combine_super_soldier.mdl"} }//add model in lmp
+		edit {classname "npc_human_medic" values {classname "npc_combine_s" model "models/combine_soldier_prisonguard.mdl"} }
+//--
+	create {classname "ai_relationship"
+			values
+			{
+				subject "npc_vortigaunt"
+				target	"!player"
+				disposition "1"
+				rank	"99"
+				StartActive "1"
+				Reciprocal	"1"
+			}
+		}
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_vortigaunt"
+				target	"npc_citizen"
+				disposition "1"
+				rank	"50"
+				StartActive "1"
+				Reciprocal	"0"
+			}
+		}
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_citizen"
+				target	"npc_vortigaunt"
+				disposition "2"
+				rank	"99"
+				StartActive "1"
+				Reciprocal	"0"
+			}
+		}
+//Starting Equips
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipment_base"
+				item_suit "1"
+				//TODO: find base armor values
+				weapon_crowbar "1"
+				weapon_pistol "1"
+					ammo_pistol "18"
+				weapon_frag "1"
+				weapon_357 "1"
+					ammo_357 "6"
+				weapon_mp5k "1"
+					ammo_smg1 "30"
+			}
+		}
+
+//Tele vator managers
+		create {classname "logic_auto"
+			values
+			{
+				spawnflags "1"
+				OnMapTransition "syn_spawn_manager,TeleportPlayers,syn_vator_teleport_loc_intro,0.1,-1"
+			}
+		}
+		create {classname "info_teleport_destination" origin "1864 1184 -88"
+			values
+			{
+				targetname "syn_vator_teleport_loc_intro"
+				angles "0 270 0"
+				parentname "c1a3b-c1a3c-elevator"
+			}
+		}
+		create {classname "info_spawn_manager" values {targetname "syn_spawn_manager"} }
+
+//Remove fail
+		delete {targetname "c1a3b_loadsaved"}
+//kill those who do though
+		create {classname "trigger_hurt" origin "0 0 -1376"
+			values
+			{
+				model "*88"
+				spawnflags "1"
+				damage "1000"
+				damagetype "32"//fall
+				nodmgforce "1"
+			}
+		}
+
+//end vator
+		edit {targetname "top_button" values {spawnflags "3105"} }//+Start Locked
+		create {classname "trigger_coop" origin "688 688 94"
+			values
+			{
+				model "*88"
+				spawnflags "1"
+				//targetname ""
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "75"
+				OnPlayersIn "top_button,Unlock,,0,1"
+				OnPlayersIn "!self,Kill,,1,1"
+			}
+		}
+		create {classname "logic_auto"
+			values
+			{
+				spawnflags "1"
+				OnMapSpawn "top_button,AddOutput,OnPressed syn_spawn_manager:TeleportPlayers:syn_vator_teleport_end:0:-1,0,-1"
+			}
+		}
+		create {classname "info_teleport_destination" origin "424 896 80"//point_teleport (doesnt parent)
+			values
+			{
+				targetname "syn_vator_teleport_end"
+				angles "0 90 0"
+				//target "!player"
+				parentname "c1a3b-c1a3c-elevator"
+			}
+		}
+
+		create {classname "logic_relay" values {targetname "travis_func_tester"} }
+	}
+}

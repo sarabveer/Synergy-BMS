@@ -1,0 +1,128 @@
+//no soda machine soads
+//godmode? (env_global?)
+bm_c1a1b
+{
+	console
+	{
+		sv_turbophysics "0"
+	}
+	entity
+	{
+//TEMP PLACEHOLDERS
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_female" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_eli" values {classname "npc_eli"} }
+		edit {classname "npc_human_scientist_kleiner" values {classname "npc_kleiner"} }
+		edit {classname "npc_alien_slave" values {classname "npc_vortigaunt"} }
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_zombie_security" values {classname "npc_zombine"} }
+		edit {classname "npc_zombie_scientist_torso" values {classname "npc_zombie_torso"} }
+		edit {classname "npc_zombie_scientist" values {classname "npc_zombie"} }
+		edit {classname "prop_flare" values {classname "prop_physics" model "models/props_junk/flare.mdl"} }
+		edit {classname "item_ammo_glock" values {classname "item_ammo_pistol"} }
+		edit {classname "fog_volume" values {classname "func_smokevolume"} }
+//--
+create {classname "ai_relationship"
+			values
+			{
+				subject "npc_vortigaunt"
+				target	"!player"
+				disposition "1"
+				rank	"99"
+				StartActive "1"
+				Reciprocal	"1"
+			}
+		}
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_vortigaunt"
+				target	"npc_citizen"
+				disposition "1"
+				rank	"50"
+				StartActive "1"
+				Reciprocal	"0"
+			}
+		}
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_citizen"
+				target	"npc_vortigaunt"
+				disposition "2"
+				rank	"99"
+				StartActive "1"
+				Reciprocal	"0"
+			}
+		}
+//Block Backtracking
+		create {classname "prop_dynamic" origin "-1279.99 1664 -256"
+			values {model "models/synergy/tools/syn_transition.mdl"
+				angles "0 90 0"
+				solid "6"
+				DisableShadows "1"} }
+
+	//	create {classname "light_dynamic" origin "-6912 -14752 1152"
+	//		values {_light ""
+	//			brightness "2"
+	//			distance "1024"
+	//			style "12"} }
+
+		//delete {classname "item_suit"}
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipmenet_base"
+				item_suit "1"
+				//TODO: find base armor values
+			}
+		}
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipmenet_crowbar"
+				StartDisabled "1"
+				weapon_crowbar "1"
+			}
+		}
+		create {classname "logic_auto"
+			values
+			{
+				spawnflags "1"
+				OnMapSpawn "c1a1b_crowbar_rotator,AddOutput,OnOpen syn_equipmenet_crowbar:Enable::0:-1,0,-1"
+				OnMapSpawn "c1a1b_crowbar_rotator,AddOutput,OnOpen syn_equipmenet_crowbar:EquipAllPlayers::0.2:-1,0,-1"
+			}
+		}
+
+//end wait
+		edit {targetname "c1a1b_scanner_teleport" values {StartDisabled "1"} }
+		create {classname "trigger_coop" origin "-1000 768 584"
+			values
+			{
+				model "*164"
+				spawnflags "1"
+				targetname "syn_antirush_coop"
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "50"
+				OnPlayersIn "c1a1b_scanner_teleport,Enable,,0,1"
+				OnPlayersIn "!self,Kill,,1,1"
+			}
+		}
+
+//Don't insta changelevel
+		delete {classname "trigger_multiple" origin "-992 656 552"}
+		delete {targetname "c1a1b_c1a1c_trig"}
+		create {classname "trigger_changelevel" origin "-992 656 552"
+			values
+			{
+				model "*229"
+				landmark "c1a1b_c1a1c_lm"
+				map "bm_c1a1c"
+			}
+		}
+
+		create {classname "logic_relay" values {targetname "travis_func_tester"} }
+	}
+}

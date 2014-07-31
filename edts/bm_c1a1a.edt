@@ -1,0 +1,124 @@
+//TODO: vator can be blocked by player's body
+//one player is in godmode
+bm_c1a1a
+{
+	console
+	{
+		sv_turbophysics "0"
+	}
+	entity
+	{
+		"edit"
+		{
+			"classname" "item_healthcharger"
+			"values"
+			{
+				"model" "models/props_blackmesa/health_charger.mdl"
+			}
+		}
+//TEMP PLACEHOLDERS
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_female" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_eli" values {classname "npc_eli"} }
+		edit {classname "npc_human_scientist_kleiner" values {classname "npc_kleiner"} }
+		edit {classname "npc_alien_slave" values {classname "npc_vortigaunt"} }
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_zombie_security" values {classname "npc_zombine"} }
+		edit {classname "npc_zombie_scientist_torso" values {classname "npc_zombie_torso"} }
+		edit {classname "fog_volume" values {classname "func_smokevolume"} }
+//--
+		delete {classname "item_suit"}
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipmenet_base"
+				item_suit "1"
+				//TODO: find base armor values
+			}
+		}
+
+//Starter
+		create {classname "info_spawn_manager" values {targetname "syn_spawn_manager"} }
+		create {classname "info_player_coop" origin "1568 688 -556" values {targetname "syn_spawn_player_1" angles "0 270 0"} }//out of camera's way
+		create {classname "info_player_coop" origin "1568 688 -556" values {targetname "syn_spawn_player_2" angles "0 270 0" StartDisabled "1"} }
+		edit {targetname "blackout_viewcontroller" values {spawnflags "180"} }
+		delete {classname "logic_auto" origin "1398 740 -464"}
+		create {classname "trigger_once" origin "1344 680 -560"//1472 632 -560//1360 618.65 -560
+			values
+			{
+				model "*42"//*56
+				angles "90 0 0"
+				spawnflags "1"
+				OnTrigger "syn_viewcontrol,Enable,0,1,-1"
+				//OnTrigger "blackout_viewcontroller,Enable,0,1,-1"
+				OnTrigger "syn_hudtimer,Start,15,1,-1"
+			}
+		}
+		create {classname "hud_timer"
+			values
+			{
+				targetname "syn_hudtimer"
+				TimerText "RESUMING IN..."
+				TimerType "1"
+				"OnTimer" "start,Trigger,,0,-1"
+				//"OnNewGame" "global_newgame_entmaker,ForceSpawn,,0,-1"
+				"OnTimer" "gobal,TurnOff,,0,-1"
+				"OnTimer" "resuscitate_scene,BeginSequence,,0,-1"
+				"OnTimer" "break_window,Shatter,1000 1000 1000,0.1,-1"
+				"OnTimer" "start_Shooter,Shoot,,0,-1"
+				"OnTimer" "!player,SetHealth,70,0,-1"
+				"OnTimer" "Background_portal,Kill,,0,-1"
+			}
+		}
+		create {classname "point_viewcontrol" origin "1543.99 736 -141.98"
+			values
+			{
+				targetname "syn_viewcontrol"
+				spawnflags "140"
+				angles "18 243 0"
+			}
+		}
+
+//dont close shutterdoors
+		delete {classname "trigger_once" origin "1074 976 -416"}
+		create {classname "trigger_once" origin "1074 976 -416"//1360 618.65 -560
+			values
+			{
+				model "*56"
+				spawnflags "1"
+				"OnTrigger" "portal_01,Open,,0,-1"
+				//"OnTrigger" "td_1,Close,,0,-1"
+				//"OnTrigger" "td_2,Close,,0,-1"
+				"OnTrigger" "box_sparks,StopSpark,,0,-1"
+				"OnTrigger" "chamber_steam2,TurnOff,,0,-1"
+				"OnTrigger" "waterdrip_1,Start,,0,-1"
+			}
+		}
+
+//vator coop
+		edit {targetname "button_lift" values {spawnflags "3105"} }//+Start Locked
+		create {classname "trigger_coop" origin "1312 1952 -499"
+			values
+			{
+				model "*67"
+				spawnflags "1"
+				targetname "syn_vator_coop"
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "50"
+				target "syn_vator_coop_target"
+				//OnPlayersIn "syn_spawn_manager,MovePlayers,,0,-1"
+				OnPlayersIn "syn_spawn_manager,SetCheckpoint,syn_spawn_player_2,0.1,-1"
+				OnPlayersIn "bf_ld,Close,,0,-1"
+				OnPlayersIn "bf_ld,Lock,,0.1,-1"
+				OnPlayersIn "button_lift,UnLock,,1,-1"
+				OnPlayersIn "!self,TeleportPlayersNotTouching,0,-1"
+				OnPlayersIn "!self,Kill,,2,1"
+			}
+		}
+		create {classname "info_target" origin "1352 1792 -504" values {targetname "syn_vator_coop_target" angles "0 180 0" parentname "lift"} }
+
+		create {classname "logic_relay" values {targetname "travis_func_tester"} }
+	}
+}

@@ -1,0 +1,136 @@
+bm_c1a0b
+{
+	console
+	{
+		sv_turbophysics "0"
+	}
+	entity
+	{
+		"edit"
+		{
+			"classname" "item_healthcharger"
+			"values"
+			{
+				"model" "models/props_blackmesa/health_charger.mdl"
+			}
+		}
+//TEMP PLACEHOLDERS
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_female" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_eli" values {classname "npc_eli"} }
+		edit {classname "npc_human_scientist_kleiner" values {classname "npc_kleiner"} }
+		edit {classname "npc_alien_slave" values {classname "npc_vortigaunt"} }
+		edit {classname "fog_volume" values {classname "func_smokevolume"} }
+//--
+		delete {classname "item_suit"}
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipmenet_base"
+				item_suit "1"
+				//TODO: find base armor values
+			}
+		}
+
+		delete {targetname "trigger_delete_old"}
+
+		//Don't close vator doors
+		delete {classname "trigger_once" origin "-1327.5 1395 -108"}
+		//Don't lock door
+		delete {classname "trigger_once" origin "-3392 1340.01 -360"}//kleiner
+		//Don't close door
+		delete {targetname "Trigger_Eli_and_Kleiner_Scene"}//post kleiner
+		create {classname "trigger_once" origin "-3857.5 1344 -348"
+			values
+			{
+				model "*90"
+				spawnflags "1"
+				"OnStartTouch" "Eli_KLeinerSCENE,Start,,0,1"
+				"OnStartTouch" "eli_walkstoconsole,BeginSequence,,0.25,-1"
+				"OnStartTouch" "SCI43_walkstotable,BeginSequence,,3,1"
+			}
+		}
+//Wait for most players for pre-chamber lecture
+		//merge theses into trigger_coop
+		delete {classname "trigger_once" origin "-4219 726.01 -560"}
+		delete {classname "trigger_once" origin "-4216.5 604.01 -570"}
+		create {classname "trigger_coop" origin "-4167.83 535.96 -585"//-4216.5 604.01 -570
+			values
+			{
+				model "*94"//*86 make bigger and push back (origin change)
+				spawnflags "1"
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "67"
+				target "syn_prechamber_coop_target"
+				//from *86
+				"OnPlayersIn" "testchamber_pre_sequence,CancelSequence,,0,1"
+				"OnPlayersIn" "testchamber_teleport_sequence,MoveToPosition,,0.2,1"
+				"OnPlayersIn" "lcs_testchamber_chair_pre,Kill,,0,1"
+				"OnPlayersIn" "lcs_testchamber_chair_aft,TurnOn,,0,1"
+				"OnPlayersIn" "lcs_testchamber_microphone_m,Enable,,0,1"
+				"OnPlayersIn" "lcs_testchamber_microphone_l,Enable,,0,1"
+				"OnPlayersIn" "testchamber_teleport_sequence,CancelSequence,,0.4,1"
+				//from *87
+				"OnPlayersIn" "td_1,Close,,0,1"
+				"OnPlayersIn" "td_2,Close,,0,1"
+				"OnPlayersIn" "GRD08_TChallway,Kill,,0,1"
+				"OnPlayersIn" "Sci48_TCHallway,Kill,,0,1"
+				"OnPlayersIn" "Sci47_TCHallway,Kill,,0,1"
+				"OnPlayersIn" "SCI46_TChallway,Kill,,0,1"
+				"OnPlayersIn" "SCI45_TChallway,Kill,,0,1"
+				"OnPlayersIn" "Sci44_TCHallway,Kill,,0,1"
+				"OnPlayersIn" "eli,Kill,,0,1"
+				"OnPlayersIn" "sci43a,Kill,,0,1"
+				"OnPlayersIn" "Sci43_Plasma,Kill,,0,1"
+				"OnPlayersIn" "Kleiner,Kill,,0,1"
+				"OnPlayersIn" "annoucement_speaker,TurnOff,,0,1"
+				"OnPlayersIn" "c1a0b_fogcontrol,TurnOff,,2,1"
+					OnPlayersIn "!self,Kill,,2,1"
+				//OnPlayersIn "syn_spawn_manager,MovePlayers,,0,1"
+				OnPlayersIn "!self,TeleportPlayersNotTouching,0,-1"
+			}
+		}
+		create {classname "info_target" origin "-4240 576 -632" values {targetname "syn_prechamber_coop_target" angles "0 0 0"} }
+		create {classname "info_spawn_manager" values {targetname "syn_spawn_manager"} }
+//All players in chamber
+		edit {targetname "test_chamber_ladder" values {StartDisabled "1"} }
+		delete {classname "trigger_once" origin "-3572 604.01 320"}
+		create {classname "trigger_coop" origin "-3360 64 -620"
+			values
+			{
+				model "*69"
+				angles "90 90 0"
+				spawnflags "1"
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "50"
+				target "syn_chamber_coop_target"
+				"OnPlayersIn" "hott_mic,PlaySound,,2,1"
+				"OnPlayersIn" "lcs_controlroom,Cancel,,0,1"
+				"OnPlayersIn" "control_cam,SetOn,,0,1"
+				"OnPlayersIn" "cam_m,Enable,,0,1"
+				"OnPlayersIn" "door_block,Enable,,0,1"
+				"OnPlayersIn" "disaster_begin,Trigger,,2.5,1"
+				"OnPlayersIn" "chamber_airlocktop,Close,,0.5,-"
+				"OnPlayersIn" "chamber_airlockbot,Close,,0.5,1"
+				"OnPlayersIn" "relay_foyeridles_kill,Trigger,,0,1"
+				"OnPlayersIn" "c1a0b_foyer_scene,Resume,,0,1"
+				OnPlayersIn "test_chamber_ladder,Enable,,0,1"
+				OnPlayersIn "!self,Kill,,2,-1"
+				//OnPlayersIn "syn_spawn_manager,MovePlayers,,0,1"
+				OnPlayersIn "!self,TeleportPlayersNotTouching,0,-1"
+			}
+		}
+		create {classname "info_target" origin "-3920 320 -680" values {targetname "syn_chamber_coop_target" angles "0 45 0" parentname "train_model"} }
+
+
+//viewcontrol all
+		edit {targetname "offer_view3" values {spawnflags "140"} }
+//move back teleporter behind camera
+		edit {targetname "disaster_pointteleport2" values {origin "-9216 -3232 -888"} }
+
+		create {classname "logic_relay" values {targetname "travis_func_tester"} }
+	}
+}

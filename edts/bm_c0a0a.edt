@@ -1,0 +1,134 @@
+//First BMS attempt -TravisWehrman 9/15/12
+bm_c0a0a
+{
+	console
+	{
+		sv_player_push "0"
+		sv_turbophysics "1"
+	}
+	entity
+	{
+//TEMP PLACEHOLDERS
+		edit {classname "npc_human_scientist" values {classname "npc_human_scientist"} }
+//--
+//Syn Ents
+		create {classname "info_spawn_manager" values {targetname "syn_spawn_manager"} }
+		create {classname "info_player_coop" origin "-1120 8001 -133" values {angles "0 90 0" targetname "syn_spawn_player_1" parentname "train"} }
+		create {classname "info_global_settings" values {targetname "syn_global_settings" IsVehicleMap "1"} }//Static Spawning
+		//create {classname "info_player_coop" origin "-2240 8928 -255" values {angles "0 90 0"} }//-2768 8088 -158//z-160
+		//differnet spawn, S-in MDL:0
+
+//Pause starters
+		delete {classname "logic_auto" origin "-913 8160 -124"}
+		delete {classname "logic_auto" origin "-856 8188 -124"}
+			create {classname "logic_relay"
+				values
+				{
+					targetname "syn_starter_main"
+						//OnTrigger "syn_starter_signs,Trigger,,0,-1"
+					//-913 8160 -124
+					"OnTrigger" "inbound_signs_2b,SetAnimation,on,4.5,-1"
+					"OnTrigger" "inbound_signs_2a,SetAnimation,on,3,-1"
+					"OnTrigger" "inbound_signs_1b,SetAnimation,on,2.5,-1"
+					"OnTrigger" "inbound_signs_1a,SetAnimation,on,1,-1"
+					//-856 8188 -124
+					"OnTrigger" "train,StartForward,,13,-1"
+					"OnTrigger" "intro_title,ShowMessage,,13,-1"
+					"OnTrigger" "lvl_sounds,PlaySound,,0,-1"
+					"OnTrigger" "sci_walk_s3,BeginSequence,,10.75,-1"
+					"OnTrigger" "sci_walk_s5,BeginSequence,,11.5,-1"
+					"OnTrigger" "intro_teleport,Teleport,,10.5,-1"
+						OnTrigger "syn_viewcontrol_black,Disable,,10.5,-1"
+					"OnTrigger" "intro_fade,Fade,,10,-1"
+					"OnTrigger" "intro_logo,ShowLogo,,0,-1"
+					"OnTrigger" "Sci12_GmanRoom_Scene,Start,,11.5,-1"
+					"OnTrigger" "Sci08_NetworkRoom_Scene,Start,,11.5,-1"
+					"OnTrigger" "Sci09_NetworkRoom_Scene,Start,,11.5,-1"
+					"OnTrigger" "GRD_DepartureCatwalkWindowRight_seq,BeginSequence,,12.7,-1"
+					"OnTrigger" "GRD_DepartureCatwalk_lookscene,Start,,12.74,-1"
+				}
+			}
+
+//Hold at intro
+		create {classname "point_viewcontrol" origin "-1240 7792 -8"
+			values
+			{
+				targetname "syn_viewcontrol"
+				spawnflags "140"
+				angles "13 325 0"
+			}
+		}
+		create {classname "point_viewcontrol" origin "-2304 8936 -216"
+			values
+			{
+				targetname "syn_viewcontrol_black"
+				spawnflags "140"
+				angles "0 90 0"
+			}
+		}
+		create {classname "hud_timer"
+			values
+			{
+				targetname "syn_hudtimer"
+				TimerText "STARTING IN..."
+				TimerType "1"
+				OnTimer "syn_starter_main,Trigger,,1,-1"
+				//OnTimer "syn_viewcontrol,Disable,,1,-1"
+				OnTimer "syn_viewcontrol_black,Enable,,1,-1"
+				OnTimer "intro_music,PlaySound,,1,-1"
+			}
+		}
+		create {classname "trigger_once" origin "-1112 8020 -128"//-2248 8876 -120//-2792 8084 -136//-2768 8088 -160
+			values
+			{
+				model "*32"
+				spawnflags "1"
+				OnTrigger "syn_viewcontrol,Enable,,1,-1"
+				OnTrigger "syn_hudtimer,Start,15,1,-1"
+			}
+		}
+
+//==Various coop Fixes==
+		//All Players
+		edit {classname "env_message" values {spawnflags "2"} }
+		//Pause Intro Music
+		edit {targetname "intro_music" values {spawnflags "17"} }
+
+//Train Catcher 2.0
+		create {classname "trigger_coop" origin "-1120 8000 -153.5"
+			values
+			{
+				targetname "syn_traincatcher"
+				model "*32"
+				spawnflags "1"
+				parentname "train_model"
+				target "syn_traincatcher_target"
+				OnEndTouch "!self,TeleportPlayersNotTouching,0,-1"
+			}
+		}
+		create {classname "info_target" origin "-1184 8000 -128" values {targetname "syn_traincatcher_target" angles "0 0 0" parentname "train_model"} }
+
+//Train Catcher
+	//	create {classname "trigger_teleport" origin "-1120 8000 -153.5"//-1168 8000 -161.5
+	//		values
+	//		{
+	//			targetname "syn_traincatcher"
+	//			model "*18"
+	//			angles "0 0 90"
+	//			spawnflags "1"
+	//			parentname "train"
+	//			target "syn_traincatcher_target"
+	//		}
+	//	}
+	//	create {classname "info_target" origin "-1184 8000 -128"
+	//		values
+	//		{
+	//			targetname "syn_traincatcher_target"
+	//			//angles "0 0 0"
+	//			parentname "train"
+	//		}
+	//	}
+
+		create {classname "logic_relay" values {targetname "travis_func_tester"} }
+	}
+}

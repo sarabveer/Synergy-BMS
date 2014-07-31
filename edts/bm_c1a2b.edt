@@ -1,0 +1,173 @@
+bm_c1a2b
+{
+	console
+	{
+		sv_turbophysics "0"
+	}
+	entity
+	{
+//TEMP PLACEHOLDERS
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_female" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_eli" values {classname "npc_eli"} }
+		edit {classname "npc_human_scientist_kleiner" values {classname "npc_kleiner"} }
+		edit {classname "npc_alien_slave" values {classname "npc_vortigaunt"} }
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_zombie_security" values {classname "npc_zombine"} }
+		edit {classname "npc_zombie_scientist_torso" values {classname "npc_zombie_torso"} }
+		edit {classname "npc_zombie_scientist" values {classname "npc_zombie"} }
+		edit {classname "prop_flare" values {classname "prop_physics" model "models/props_junk/flare.mdl"} }
+		edit {classname "item_ammo_glock" values {classname "item_ammo_pistol"} }
+		edit {classname "item_weapon_crowbar" values {classname "weapon_crowbar"} }
+		edit {classname "item_weapon_glock" values {classname "weapon_pistol"} }
+		edit {classname "item_weapon_frag" values {classname "weapon_frag"} }
+		edit {classname "item_crate" values {classname "item_item_crate"} }
+		edit {classname "item_weapon_357" values {classname "weapon_357"} }
+		edit {classname "npc_sentry_ceiling" values {classname "npc_turret_ceiling" spawnflags "32"} }
+		edit {classname "fog_volume" values {classname "func_smokevolume"} }
+//--
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_vortigaunt"
+				target	"!player"
+				disposition "1"
+				rank	"99"
+				StartActive "1"
+				Reciprocal	"1"
+			}
+		}
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_vortigaunt"
+				target	"npc_citizen"
+				disposition "1"
+				rank	"50"
+				StartActive "1"
+				Reciprocal	"0"
+			}
+		}
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_citizen"
+				target	"npc_vortigaunt"
+				disposition "2"
+				rank	"99"
+				StartActive "1"
+				Reciprocal	"0"
+			}
+		}
+//Block Backtracking
+		create {classname "prop_dynamic" origin "-2428 1000 -32"
+			values
+			{
+				model "models/synergy/tools/syn_transition.mdl"
+				//angles "0 0 0"
+				solid "6"
+				DisableShadows "1"
+			}
+		}
+
+		delete {classname "item_suit"}
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipmenet_base"
+				item_suit "1"
+				//TODO: find base armor values
+				weapon_crowbar "1"
+				weapon_pistol "1"
+					ammo_pistol "18"
+				weapon_frag "1"
+			}
+		}
+
+//If a player found the 357 last level, enable it in the spawn equip for everyone.
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipmenet_357"
+				StartDisabled "1"
+				weapon_357 "1"
+					ammo_357 "6"
+			}
+		}
+		create {classname "env_global"
+			values
+			{
+				//initialstate "0"
+				targetname "syn_global_357"
+				globalstate "syn_357_found"
+			}
+		}
+		create {classname "logic_auto"
+			values
+			{
+				spawnflags "1"
+				globalstate "syn_357_found"
+				OnMapSpawn "syn_equipmenet_357,Enable,-1,0,-1"
+				OnMapSpawn "syn_global_357,TurnOn,,1,-1"
+			}
+		}
+
+//end wait 1
+		create {classname "trigger_coop" origin "296 524 334"
+			values
+			{
+				model "*78"
+				angles "0 0 343"
+				spawnflags "1"
+				targetname "syn_antirush_coop"
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "75"
+				OnPlayersIn "syn_antirush_wall_c1a2b,Kill,,1,1"
+				OnPlayersIn "syn_antirush_coop2,Disable,,0,-1"
+				//OnPlayersOut "syn_antirush_coop2,Enable,,0,-1"
+				OnPlayersIn "!self,Disable,,1,1"
+			}
+		}
+		create {classname "prop_dynamic" origin "16 640 671.98"
+			values
+			{
+				model "models/synergy/tools/syn_transition.mdl"
+				angles "0 270 270"
+				solid "6"
+				DisableShadows "1"
+				targetname "syn_antirush_wall_c1a2b"
+			}
+		}
+
+//end wait 2
+		create {classname "trigger_coop" origin "-316 92 492"
+			values
+			{
+				model "*15"
+				spawnflags "1"
+				targetname "syn_antirush_coop2"
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "75"
+				OnPlayersIn "syn_antirush_wall2_c1a2b,Kill,,1,1"
+				OnPlayersIn "syn_antirush_coop,Disable,,1,1"
+				//OnPlayersOut "syn_antirush_coop,Enable,,1,1"
+				OnPlayersIn "!self,Disable,,1,1"
+			}
+		}
+		create {classname "prop_dynamic" origin "-320 -32 424"
+			values
+			{
+				model "models/synergy/tools/syn_transition.mdl"
+				angles "0 90 0"
+				solid "6"
+				DisableShadows "1"
+				targetname "syn_antirush_wall2_c1a2b"
+			}
+		}
+
+		create {classname "logic_relay" values {targetname "travis_func_tester"} }
+	}
+}

@@ -1,0 +1,221 @@
+//annoying sound?
+//use static playerteleport point?
+bm_c1a0a
+{
+	console
+	{
+		sv_turbophysics "0"
+	}
+	entity
+	{
+		"edit"
+		{
+			"classname" "item_healthcharger"
+			"values"
+			{
+				"model" "models/props_blackmesa/health_charger.mdl"
+			}
+		}
+//TEMP PLACEHOLDERS
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_female" values {classname "npc_citizen"} }
+		edit {classname "fog_volume" values {classname "func_smokevolume"} }
+//--
+//Syn Ents
+		create {classname "info_spawn_manager" values {targetname "syn_spawn_manager"} }
+		create {classname "info_player_coop" origin "284 -1228 516" values {angles "0 180 0" targetname "syn_spawn_player_1"} }
+		create {classname "info_player_coop" origin "288 -64 516" values {angles "0 90 0" targetname "syn_spawn_player_2" StartDisabled "1"} }
+
+//Starter
+		delete {classname "trigger_once" origin "218.5 -1232.5 553.5"}
+		create {classname "trigger_once" origin "218.5 -1232.5 553.5"
+			values
+			{
+				model "*148"
+				spawnflags "1"
+				OnTrigger "syn_hudtimer,Start,15,1,-1"
+			}
+		}
+		create {classname "hud_timer"
+			values
+			{
+				targetname "syn_hudtimer"
+				TimerText "RESUMING IN..."
+				TimerType "1"
+				OnTimer "morningfreeman,Start,,0,-1"
+			}
+		}
+//Coop enter bmrf
+		delete {targetname "LCS_AM_Airlock_trigger"}
+		create {classname "trigger_coop" origin "258 269.5 576"
+			values
+			{
+				model "*146"
+				spawnflags "1"
+				targetname "syn_enterbm_coop"
+				target "syn_enterbm_coop_target"
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "50"
+				OnPlayersIn "LCS_AM_Airlock,Resume,,0,1"
+				OnPlayersIn "door_01_top,Close,,0,1"
+				OnPlayersIn "AM_door_1,SetAnimation,close,0,1"
+				OnPlayersIn "c1a0a_fogcontrol,TurnOn,,1.5,1"
+				OnPlayersIn "syn_spawn_manager,SetCheckpoint,syn_spawn_player_2,1.5,1"
+				OnPlayersIn "!self,TeleportPlayersNotTouching,0,-1"
+				OnPlayersIn "!self,Kill,,2,1"
+			}
+		}
+		create {classname "info_target" origin "272 32 520" values {targetname "syn_enterbm_coop_target" angles "0 90 0"} }
+
+//Don't close door
+		delete {classname "trigger_once" origin "272 456 608"}
+		create {classname "trigger_once" origin "272 456 608"
+			values
+			{
+				model "*103"
+				spawnflags "1"
+				OnTrigger "Sci04_sit,BeginSequence,,0,-1"
+				OnTrigger "Grd02_Lobby,StartScripting,,0,-1"
+				OnTrigger "LCS_Lobby_Desk_Player,Start,,1,-1"
+			}
+		}
+//Fix HEV shiz
+		edit {targetname "HEV_prop" values {solid "0" targetname "syn_disableIO_HEV_prop"} }
+		delete {targetname "HEV"}
+		create {classname "item_suit" origin "928 4483 397.5"
+			values
+			{
+				spawnflags "131072"
+				targetname "HEV"
+				angles "0 270 0"
+				//fademaxdist "1"//make invis
+				rendermode "10"//
+				OnPlayerTouch "HEV_maker,ForceSpawn,,0,1"
+				OnPlayerTouch "syn_suit_relay,Trigger,,0,1"
+				OnPlayerTouch "syn_equipmenet_suit,Enable,,0,1"
+			}
+		}
+		create {classname "logic_relay"
+			values
+			{
+				spawnflags "1"
+				targetname "syn_suit_relay"
+				"OnTrigger" "am_music,PlaySound,,0,-1"
+				"OnTrigger" "Gman,Kill,,0,-1"
+				"OnTrigger" "networkroom_phase2_argument,BeginSequence,,0.5,-1"
+				"OnTrigger" "ss_laba_conversation,CancelSequence,,0,-1"
+				"OnTrigger" "no_hev_t,Disable,,0,-1"
+				"OnTrigger" "yes_hev_t,Enable,,0,-1"
+				"OnTrigger" "no_suit_t,Disable,,0,-1"
+				"OnTrigger" "suit_t,Enable,,0,-1"
+				"OnTrigger" "bm_c1a0a_trigger_disable,Disable,,0,-1"
+				"OnTrigger" "bm_c1a0a_trigger_enable,Enable,,0,-1"
+				"OnTrigger" "bm_c1a0a_scenes_locker_enable,Enable,,0,-1"
+				"OnTrigger" "ss_nh,Cancel,,0,-1"
+				"OnTrigger" "suit_scene_t1,Enable,,0,-1"
+				"OnTrigger" "NetworkHallway_Convention_03,CancelSequence,,0.1,-1"
+				"OnTrigger" "SCI17_Locker,GagEnable,,0,-1"
+				"OnTrigger" "NetworkHallway_Convention_02,CancelSequence,,0.1,-1"
+				"OnTrigger" "NetworkHallway_Convention_01,CancelSequence,,0.1,-1"
+				"OnTrigger" "ss_lobby_conversation,CancelSequence,,0,-1"
+				"OnTrigger" "NetworkHallway_ConventionConversation,Cancel,,0,-1"
+				"OnTrigger" "seq_Sci03_type,BeginSequence,,0,-1"
+				"OnTrigger" "seq_Sci03_sit,CancelSequence,,0,-1"
+				"OnTrigger" "func_lobby_laptop,Lock,,0,-1"
+				"OnTrigger" "bm_c1a0a_lunchbet_scene_walk2,BeginSequence,,0,-1"
+				"OnTrigger" "Lab01_ActBusy3,ForceThisNPCToActBusy,SCI21_Lab01,0,-1"
+				"OnTrigger" "Lab01_ActBusy1,ForceThisNPCToActBusy,SCI20_Lab01,0,-1"
+				"OnTrigger" "Lab01_ActBusy3,Activate,,0,-1"
+				"OnTrigger" "Lab01_ActBusy1,Activate,,0,-1"
+				"OnTrigger" "SCI12_Sequence,BeginSequence,,0,-1"
+				"OnTrigger" "SCI20_Lab01_Sequence,CancelSequence,,1.85,-1"
+				"OnTrigger" "lcs_testchamber_sit_chair01,BeginSequence,,0,-1"
+				"OnTrigger" "Sci04_sit,CancelSequence,,0,-1"
+				"OnTrigger" "Sci04_printer,BeginSequence,,10,-1"
+				"OnTrigger" "SCI06_SideOffice_Conversation_trigger,Kill,,11,-1"
+				"OnTrigger" "SCI06_SideOffice_Conversation_resume,Kill,,11,-1"
+				"OnTrigger" "tp_timer,Enable,,0,-1"
+				"OnTrigger" "ss_laba_sci21_phase2,BeginSequence,,0.1,-1"
+				"OnTrigger" "gman_trigger,Kill,,0,-1"
+				"OnTrigger" "monitor_01,Skin,2,0,-1"
+				"OnTrigger" "spawner_clipboard2,ForceSpawn,,0,1"
+				"OnTrigger" "SCI06_SideOffice_Conversation,Kill,,0,1"
+				"OnTrigger" "sci06_clipboard,Kill,,0,1"
+				"OnTrigger" "SideOffice_Conversation,CancelSequence,,0,1"
+				"OnTrigger" "lab01_fem,BeginSequence,,1,1"
+				"OnTrigger" "LCS_ResearchWing_Convention_Start,Trigger,,0.1,-1"
+				"OnTrigger" "LCS_ResearchWing_Convention_Sci06_Present,Enable,,0,-1"
+				"OnTrigger" "bm_c1a0a_noTP_scene,Kill,,0,-1"
+			}
+		}
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipmenet_suit"
+				StartDisabled "1"
+				item_suit "1"
+			}
+		}
+
+//Don't lock door to Area 3
+		delete {classname "trigger_multiple" origin "-1328 2576 342"}
+		create {classname "trigger_multiple" origin "-1328 2576 342"
+			values
+			{
+				model "*39"
+				spawnflags "1"
+				"OnStartTouch" "lab1_door2b,Open,,0,-1"
+				"OnStartTouch" "lab1_door2a,Open,,0,-1"
+				"OnEndTouchAll" "lab1_door2b,Close,,2,-1"
+				"OnEndTouchAll" "lab1_door2a,Close,,2,-1"
+				//"OnStartTouch" "lab1_door1a,Close,,0,-1"
+				//"OnStartTouch" "lab1_door1b,Close,,0,-1"
+				"OnStartTouch" "lab4_s,BeginSequence,,0,1"
+			}
+		}
+
+//vator coop (testing new TeleportPlayersNotTouching input w/ landmark)
+		edit {targetname "eb" values {targetname "syn_disableIO_eb" spawnflags "3105"} }//+Start Locked | disableIO
+		create {classname "trigger_coop" origin "-1326 1896 -159.12"
+			values
+			{
+				model "*155"
+				spawnflags "1"
+				parentname "Lift_01"
+				targetname "syn_vator_coop"
+				target "syn_vator_coop_target"
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "50"
+				//OnPlayersIn "!self,TeleportPlayersNotTouching,,0,1"
+				OnPlayersIn "syn_disableIO_eb,AddOutput,targetname eb,0,1"//re-enable IO
+				OnPlayersIn "eb,Unlock,,1,1"
+				OnPlayersIn "!self,Kill,,2,1"
+			}
+		}
+		create {classname "info_target" origin "-1328 1920 -220" values {targetname "syn_vator_coop_target" angles "0 270 0" parentname "Lift_01"} }
+		//create {classname "trigger_once" origin "-1326 1896 -159.12"
+		//	values
+		//	{
+		//		model "*155"
+		//		spawnflags "1"
+		//		StartDisabled "1"
+		//		parentname "Lift_01"
+		//		targetname "syn_vator_moveplayers"
+		//		OnTrigger "syn_spawn_manager,MovePlayers,,0,-1"
+		//	}
+		//}
+		create {classname "logic_auto"
+			values
+			{
+				spawnflags "1"
+				//OnMapSpawn "syn_disableIO_eb,AddOutput,OnPressed syn_vator_moveplayers:Enable::1.25:1,0,-1"
+				OnMapSpawn "syn_disableIO_eb,AddOutput,OnPressed syn_vator_coop:TeleportPlayersNotTouching::0:1,0,-1"
+			}
+		}
+
+		create {classname "logic_relay" values {targetname "travis_func_tester"} }
+	}
+}

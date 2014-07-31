@@ -1,0 +1,178 @@
+//water overlay:TEST
+bm_c1a1c
+{
+	console
+	{
+		sv_turbophysics "0"
+	}
+	entity
+	{
+//TEMP PLACEHOLDERS
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_female" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_eli" values {classname "npc_eli"} }
+		edit {classname "npc_human_scientist_kleiner" values {classname "npc_kleiner"} }
+		edit {classname "npc_alien_slave" values {classname "npc_vortigaunt"} }
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_zombie_security" values {classname "npc_zombine"} }
+		edit {classname "npc_zombie_scientist_torso" values {classname "npc_zombie_torso"} }
+		edit {classname "npc_zombie_scientist" values {classname "npc_zombie"} }
+		edit {classname "prop_flare" values {classname "prop_physics" model "models/props_junk/flare.mdl"} }
+		edit {classname "item_ammo_glock" values {classname "item_ammo_pistol"} }
+		edit {classname "item_weapon_crowbar" values {classname "weapon_crowbar"} }
+		edit {classname "item_weapon_glock" values {classname "weapon_pistol"} }
+		edit {classname "item_weapon_frag" values {classname "weapon_frag"} }
+		edit {classname "item_crate" values {classname "item_item_crate"} }
+		edit {classname "fog_volume" values {classname "func_smokevolume"} }
+//--
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_vortigaunt"
+				target	"!player"
+				disposition "1"
+				rank	"99"
+				StartActive "1"
+				Reciprocal	"1"
+			}
+		}
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_vortigaunt"
+				target	"npc_citizen"
+				disposition "1"
+				rank	"50"
+				StartActive "1"
+				Reciprocal	"0"
+			}
+		}
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_citizen"
+				target	"npc_vortigaunt"
+				disposition "2"
+				rank	"99"
+				StartActive "1"
+				Reciprocal	"0"
+			}
+		}
+//Remove init items
+		edit {targetname "new_game_spawn" values {targetname "syn_disableIO_new_game_spawn"} }
+
+		create {classname "info_spawn_manager" values {targetname "syn_spawn_manager"} }
+		create {classname "info_player_coop" origin "-592 -1804 -151" values {targetname "syn_spawn_player_1" angles "0 270 0"} }
+		create {classname "info_player_coop" origin "-768 -3088 -216" values {targetname "syn_spawn_player_2" angles "0 180 0" StartDisabled "1" parentname "lift_1"} }
+
+//Block Backtracking
+		create {classname "prop_dynamic" origin "-592 -1712 -160"
+			values
+			{
+				model "models/synergy/tools/syn_transition.mdl"
+				angles "0 270 0"
+				solid "6"
+				DisableShadows "1"
+			}
+		}
+
+		delete {classname "item_suit"}
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipmenet_base"
+				item_suit "1"
+				//TODO: find base armor values
+				weapon_crowbar "1"
+			}
+		}
+
+//vator coop
+		delete {classname "trigger_once" origin "-796 -3100 -172.5"}
+		create {classname "trigger_coop" origin "-813.5 -3202.08 -228"
+			values
+			{
+				model "*11"
+				spawnflags "1"
+				targetname "syn_vatorfall_coop"
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "50"
+				target "syn_spawn_player_2"
+				//OnPlayersIn "syn_spawn_manager,MovePlayers,,0,1"
+				OnPlayersIn "syn_spawn_manager,SetCheckpoint,syn_spawn_player_2,0,1"
+				OnPlayersIn "!self,TeleportPlayersNotTouching,0,-1"
+				OnPlayersIn "!self,Disable,,2,1"
+				//from TO -796 -3100 -172.5
+				"OnPlayersIn" "lift_1_t,StartForward,,9.1,1"
+				"OnPlayersIn" "Snap_Shake,StartShake,,8,1"
+				"OnPlayersIn" "l1a,Break,,5,1"
+				"OnPlayersIn" "l4a,Break,,4,1"
+				"OnPlayersIn" "l3a,Break,,4,1"
+				"OnPlayersIn" "l2a,Break,,3,1"
+				"OnPlayersIn" "start_Shake,StartShake,,1,1"
+				"OnPlayersIn" "snap,PlaySound,,1,1"
+				"OnPlayersIn" "lift_block,Enable,,0,1"
+				"OnPlayersIn" "lift_block2,Enable,,0,1"
+			}
+		}
+
+//New Weapon(s)
+		create {classname "trigger_multiple" origin "-1363 -1977 -934"
+			values
+			{
+				model "*158"
+				spawnflags "1"
+				filtername "syn_newweapon_got"
+				OnStartTouch "syn_equipmenet_c1a1c,EquipPlayer,,0,-1"
+				OnStartTouch "!activator,AddOutput,targetname syn_bm_c1a1c_playergotnewitem,0.1,-1"
+			}
+		}
+		create {classname "filter_activator_name"
+			values
+			{
+				targetname "syn_newweapon_got"
+				Negated "1"
+				filtername "syn_bm_c1a1c_playergotnewitem"
+			}
+		}
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipmenet_c1a1c"
+				StartDisabled "1"
+				weapon_pistol "1"
+					ammo_pistol "18"
+				weapon_frag "1"
+					ammo_grenade "2"
+			}
+		}
+
+//WaterOverpay perplayer
+		//edit {targetname "sewer_overlay" values{ spawnflags "1"} }//did not have spawnflags keyvalue, did not test anyway
+		create {classname "env_screenoverlay"
+			values
+			{
+				spawnflags "1"
+				"targetname" "sewer_overlay"
+				"OverlayTime1" "-1"
+				"OverlayName1" "effects/water_warp01"
+			}
+		}
+
+//Don't insta changelevel
+		delete {classname "trigger_multiple" origin "-3904 -1824 -1048"}
+		delete {targetname "c1a1c_c1a1d_trig"}
+		create {classname "trigger_changelevel" origin "-3904 -1824 -1048"
+			values
+			{
+				model "*57"
+				landmark "c1a1c_c1a1d_lm"
+				map "bm_c1a1d"
+			}
+		}
+
+		create {classname "logic_relay" values {targetname "travis_func_tester"} }
+	}
+}

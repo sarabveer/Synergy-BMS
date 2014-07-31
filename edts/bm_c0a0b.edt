@@ -1,0 +1,154 @@
+bm_c0a0b
+{
+	console
+	{
+		sv_player_push "0"
+		sv_turbophysics "1"
+	}
+	entity
+	{
+//Syn Ents
+		create {classname "info_spawn_manager" values {targetname "syn_spawn_manager"} }
+		create {classname "info_player_coop" origin "2976 -3584 128" values {angles "0 180 0" targetname "syn_spawn_player_1" parentname "train_model"} }//TODO: angles do not update with parent!
+		create {classname "info_global_settings" values {targetname "syn_global_settings" IsVehicleMap "1"} }//Static Spawning
+
+//teleport slower loaders into train
+		create {classname "logic_auto"
+			values
+			{
+				spawnflags "1"
+				OnMapTransition "syn_spawn_manager,TeleportPlayers,syn_intro_teleport,0.1,-1"
+			}
+		}
+		create {classname "info_teleport_destination" origin "2976 -3584 128"
+			values
+			{
+				targetname "syn_intro_teleport"
+				angles "0 180 0"
+				parentname "train_model"
+			}
+		}
+
+//Intro Jazz
+		delete {classname "logic_auto" origin "2903 -3565.72 161.8"}
+			create {classname "logic_relay"
+				values
+				{
+					targetname "syn_starter_main"
+					OnTrigger "train,StartForward,,0,-1"
+						OnTrigger "console,Command,cl_detaildist 4096,0,-1"//from LA: 900 -832 156
+				}
+			}
+		create {classname "point_viewcontrol" origin "2896 -3456 224"
+			values
+			{
+				targetname "syn_viewcontrol"
+				spawnflags "140"
+				angles "13 150 0"
+			}
+		}
+		create {classname "hud_timer"
+			values
+			{
+				targetname "syn_hudtimer"
+				TimerText "RESUMING IN..."
+				TimerType "1"
+				OnTimer "syn_starter_main,Trigger,,1,-1"
+				OnTimer "syn_viewcontrol,Disable,,1,-1"
+				OnTimer "syn_musicfix,PlaySound,,1,-1"
+			}
+		}
+		create {classname "trigger_once" origin "3030 -3586 144"
+			values
+			{
+				model "*20"
+				//angles ""
+				spawnflags "1"
+				OnTrigger "syn_viewcontrol,Enable,,0,-1"
+				OnTrigger "syn_hudtimer,Start,15,0,-1"
+			}
+		}
+		create {classname "logic_auto"
+			values
+			{
+				spawnflags "1"
+				OnMapSpawn "train,Stop,,0,-1"
+			}
+		}
+		delete {classname "ambient_generic" origin "2903 -3565.61 174.52"}
+		create {classname "ambient_generic"
+			values
+			{
+				spawnflags "17"
+				targetname "syn_musicfix"
+				message "#*music/bms - inboundb.mp3"
+				health "4"
+			}
+		}
+//Teleport players who are slow loaders
+		create {classname "logic_auto"
+			values
+			{
+				spawnflags "1"
+				OnMapTransition "syn_spawn_manager,TeleportPlayers,syn_intro_teleport,0.1,-1"
+			}
+		}
+		create {classname "info_teleport_destination" origin "2976 -3584 128"
+			values
+			{
+				targetname "syn_intro_teleport"
+				angles "0 180 0"
+				parentname "train_model"
+			}
+		}
+		create {classname "info_spawn_manager" values {targetname "syn_spawn_manager"} }
+
+//Train Catcher 2.0
+		create {classname "trigger_coop" origin "3032 -3584 181.29"
+			values
+			{
+				targetname "syn_traincatcher"
+				model "*18"
+				spawnflags "1"
+				parentname "train_model"
+				target "syn_traincatcher_target"
+				OnEndTouch "!self,TeleportPlayersNotTouching,0,-1"
+			}
+		}
+		create {classname "info_target" origin "3088 -3578 128" values {targetname "syn_traincatcher_target" angles "0 180 0" parentname "train_model"} }
+
+
+////Train Catcher
+//		create {classname "trigger_teleport" origin "2992 -3584 100"//3040 -3584 100//3048 -3576 91.5
+//			values
+//			{
+//				targetname "syn_traincatcher"
+//				model "*19"//*39
+//				angles "0 0 90"//90 0 0
+//				spawnflags "1"
+//				parentname "train_model"
+//				target "syn_traincatcher_target"
+//			}
+//		}
+//		create {classname "info_target" origin "3088 -3578 128"
+//			values
+//			{
+//				targetname "syn_traincatcher_target"
+//				angles "0 180 0"
+//				parentname "train_model"
+//			}
+//		}
+////trackswitch
+//		create {classname "logic_auto"
+//			values
+//			{
+//				spawnflags "1"
+//				//OnMapSpawn "train_elevator_rotate,AddOutput,OnFullyOpen syn_traincatcher*:ClearParent:train2:0:-1,0,-1"
+//				//OnMapSpawn "train_elevator_rotate,AddOutput,OnFullyOpen syn_traincatcher*:SetParent:train2:0.1:-1,0,-1"
+//				OnMapSpawn "train_elevator_rotate,AddOutput,OnFullyOpen syn_traincatcher:AddOutput:origin 906 -1550 -1330:0.1:-1,0,-1"//push to backish of train
+//			}
+//		}
+
+		create {classname "logic_relay" values {targetname "travis_func_tester"} }
+	}
+}

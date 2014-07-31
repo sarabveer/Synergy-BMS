@@ -1,0 +1,159 @@
+bm_c1a3a
+{
+	console
+	{
+		sv_turbophysics "0"
+	}
+	entity
+	{
+//TEMP PLACEHOLDERS
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_female" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_eli" values {classname "npc_eli"} }
+		edit {classname "npc_human_scientist_kleiner" values {classname "npc_kleiner"} }
+		edit {classname "npc_alien_slave" values {classname "npc_vortigaunt"} }
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_zombie_security" values {classname "npc_zombine"} }
+		edit {classname "npc_zombie_scientist_torso" values {classname "npc_zombie_torso"} }
+		edit {classname "npc_zombie_scientist" values {classname "npc_zombie"} }
+		edit {classname "prop_flare" values {classname "prop_physics" model "models/props_junk/flare.mdl"} }
+		edit {classname "item_ammo_glock" values {classname "item_ammo_pistol"} }
+		edit {classname "item_weapon_crowbar" values {classname "weapon_crowbar"} }
+		edit {classname "item_weapon_glock" values {classname "weapon_pistol"} }
+		edit {classname "item_weapon_frag" values {classname "weapon_frag"} }
+		edit {classname "item_crate" values {classname "item_item_crate"} }
+		edit {classname "item_weapon_357" values {classname "weapon_357"} }
+		edit {classname "npc_sentry_ceiling" values {classname "npc_turret_ceiling" spawnflags "32"} }
+		edit {classname "fog_volume" values {classname "func_smokevolume"} }
+		edit {classname "npc_human_grunt" values {classname "npc_combine_s"} }
+		edit {classname "npc_sentry_ground" values {classname "npc_turret_floor" spawnflags "0"} }
+		edit {classname "item_weapon_mp5" values {classname "weapon_mp5k"} }
+		edit {classname "item_weapon_shotgun" values {classname "weapon_shotgun"} }
+		edit {classname "grenade_tripmine" values {classname "weapon_slam"} }
+		edit {classname "item_ammo_mp5" values {classname "item_ammo_smg1"} }
+		edit {classname "item_ammo_shotgun" values {classname "item_box_buckshot"} }
+//--
+
+		edit {classname "env_message" values {spawnflags "2"} }
+		edit {targetname "new_game_spawn" values {targetname "syn_disableIO_new_game_spawn"} }
+//Starting Equips
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipment_base"
+				item_suit "1"
+				//TODO: find base armor values
+				weapon_crowbar "1"
+				weapon_pistol "1"
+					ammo_pistol "18"
+				weapon_frag "1"
+				weapon_357 "1"
+					ammo_357 "6"
+			}
+		}
+
+//Don't close intro vator doors
+		delete {classname "trigger_once" origin "-264 992 -64"}
+
+//New Weapons
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipment_shotgun"
+				StartDisabled "1"
+				weapon_shotgun "1"
+					ammo_buckshot "6"
+			}
+		}
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipment_mp5"
+				StartDisabled "1"
+				weapon_mp5k "1"//weapon_mp5
+					ammo_smg1 "30"
+			}
+		}
+		create {classname "logic_auto"
+			values
+			{
+				spawnflags "1"
+				OnMapSpawn "weapon_mp5k,AddOutput,OnCacheInteraction syn_equipment_mp5:Enable::0:-1,0,-1"//OnPlayerTouch
+				OnMapSpawn "weapon_mp5k,AddOutput,OnCacheInteraction syn_equipment_mp5:EquipAllPlayers::0.1:-1,0,-1"//OnPlayerTouch
+				OnMapSpawn "weapon_shotgun,AddOutput,OnCacheInteraction syn_equipment_shotgun:Enable::0:-1,0,-1"//OnPlayerTouch
+				OnMapSpawn "weapon_shotgun,AddOutput,OnCacheInteraction syn_equipment_shotgun:EquipAllPlayers::0.1:-1,0,-1"//OnPlayerTouch
+			}
+		}
+		create {classname "env_global"
+			values
+			{
+				//initialstate "0"
+				targetname "syn_global_shotgun"
+				globalstate "syn_shotgun_found"
+			}
+		}
+
+//end vator
+		edit {targetname "eb" values {targetname "syn_disableIO_eb" spawnflags "3105"} }
+		create {classname "trigger_coop" origin "822 -2651 -231.5"
+			values
+			{
+				model "*142"
+				spawnflags "1"
+				//targetname ""
+				CountType "1"
+				UseHUD "1"
+				PlayerValue "67"
+				OnPlayersIn "syn_disableIO_eb,Unlock,,0,1"
+				OnPlayersIn "syn_disableIO_eb,AddOutput,targetname eb,0.1,-1"
+				OnPlayersIn "!self,Disable,,1,1"
+			}
+		}
+		create {classname "logic_auto"
+			values
+			{
+				spawnflags "1"
+				OnMapSpawn "syn_disableIO_eb,AddOutput,OnPressed syn_spawn_manager:TeleportPlayers:syn_vator_teleport_loc_end:0:-1,0,-1"
+			}
+		}
+		create {classname "info_teleport_destination" origin "768 -2400 -309"
+			values
+			{
+				targetname "syn_vator_teleport_loc_end"
+				angles "0 90 0"
+				parentname "AToBElev"
+			}
+		}
+		create {classname "info_spawn_manager" values {targetname "syn_spawn_manager"} }
+
+//==return from 3c==
+
+//Block Backtracking
+		create {classname "prop_dynamic" origin "-3319.99 -1072 16"
+			values
+			{
+				model "models/synergy/tools/syn_transition.mdl"
+				angles "0 90 0"
+				solid "6"
+				DisableShadows "1"
+			}
+		}
+
+//dont close security door
+		delete {classname "trigger_once" origin "-470.48 611.13 -76"}
+		create {classname "trigger_once" origin "-470.48 611.13 -76"
+			values
+			{
+				model "*149"
+				spawnflags "1"
+				//"OnStartTouch" "sec_door_02,Close,,0.1,1"
+				//"OnStartTouch" "sec_door_02,Lock,,0,1"
+				"OnTrigger" "LCS_blastpitaccess_main,Start,,0,1"//OnStartTouch
+				"OnTrigger" "song,PlaySound,,0,-1"
+			}
+		}
+
+		create {classname "logic_relay" values {targetname "travis_func_tester"} }
+	}
+}
