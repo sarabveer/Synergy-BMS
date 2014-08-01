@@ -2,6 +2,8 @@
 ===========
 Hello, these are the *(WORK IN PROGRESS)* .edt and .inc files for Black Mesa Source.
 
+These edts are unofficial, and is a 3rd Party Project!
+
 **FEEL FREE TO CONTRIBUTE**
 
 To use BMS, you have to have it installed in the "common" Directory for Synergy Server to mount it. Your mount.cache has to have "bms". Also you have to copy the .edt and .inc files into your **Synergy** maps folder.  
