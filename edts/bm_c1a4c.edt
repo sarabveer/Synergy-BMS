@@ -1,0 +1,22 @@
+bm_c1a4c
+{
+	entity
+	{
+		create {classname "info_player_equip"
+			values
+			{
+				targetname "syn_equipment_base"
+				item_suit "1"
+				//TODO: find base armor values
+				weapon_crowbar "1"
+				weapon_pistol "1"
+					ammo_pistol "18"
+				weapon_frag "1"
+				weapon_357 "1"
+					ammo_357 "6"
+				weapon_mp5k "1"
+					ammo_smg1 "30"
+			}
+		}
+	}
+}
