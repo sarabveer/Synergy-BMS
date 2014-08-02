@@ -30,4 +30,4 @@ common/Synergy
 - No mapchange after tram ride has finised on [u]bm_c0a3a[/u]
 
 ##WARNING
-***The **.edt** and **.inc** files are unofficial and are buggy. I have put them on GitHub so anyone can contribute to make them better! But, I am not respnsible if you mess up your copy of Synergy and/or your Synergy server.***
+The **.edt** files are unofficial and are buggy. I have put them on GitHub so anyone can contribute to make them better! But, I am not respnsible if you mess up your copy of Synergy and/or your Synergy server.
