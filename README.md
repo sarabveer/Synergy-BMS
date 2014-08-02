@@ -7,18 +7,17 @@ These edts are unofficial, and is a 3rd Party Project!
 **FEEL FREE TO CONTRIBUTE**
 
 ##How to: Make a BMS Synergy Server
-- Download the BMS archive at the [url=http://www.blackmesasource.com/#download]Black Mesa Website[/url]
-- Extract it to a BMS folder, put the BMS folder in the [u]common[/u] directory
+- Download the BMS archive at the [Black Mesa Website(http://www.blackmesasource.com/#download)
+- Extract it to a BMS folder, put the BMS folder in the *common* directory
 - Your Synergy Server Directory should look like this
 ```
 common/BMS
 common/Half-Life 2
 common/Synergy
 ```
-- Download the [b]Unofficial BMS EDTS[/b] from my [url=https://github.com/Sarabveer/Synergy-BMS]GitHub[/url] page
-- Download it as a [u].zip[/u] and place the [b].edt[/b] and [b].inc[/b] files into your [b][u]Synergy[/u][/b] maps folder.
-- Add [b]bms[/b] to the [u]mount.cache[/u] file
-- Set the startup map to [u]bm_c0a0a[/u]
+- Download the **Unofficial BMS EDTS** as a *.zip* and place the *.edt* and *.inc* files into your ***Synergy*** *maps* folder.
+- Add ***bms*** to the *mount.cache* file
+- Set the startup map to *bm_c0a0a*
 - Run The Server
 - ?????
 - Profit.
