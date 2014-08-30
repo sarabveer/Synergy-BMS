@@ -26,7 +26,7 @@ common/Synergy
 - No Sound (Only Ambient Sound)
 - HL2 Player Models
 - No AI (The NPC's might randomly die :P)
-- No mapchange after tram ride has finised on [u]bm_c0a3a[/u]
+- No mapchange after tram ride has finised on ***bm_c0a3a***
 
 ##WARNING
 The **.edt** files are unofficial and are buggy. I have put them on GitHub so anyone can contribute to make them better! But, I am not respnsible if you mess up your copy of Synergy and/or your Synergy server.
