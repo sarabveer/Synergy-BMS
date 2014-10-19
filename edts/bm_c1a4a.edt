@@ -1,7 +1,58 @@
 bm_c1a4a
 {
+	console
+	{
+		sv_turbophysics "0"
+	}
 	entity
 	{
+//TEMP PLACEHOLDERS
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_female" values {classname "npc_citizen"} }
+		edit {classname "npc_human_scientist_eli" values {classname "npc_eli"} }
+		edit {classname "npc_human_scientist_kleiner" values {classname "npc_kleiner"} }
+		edit {classname "npc_alien_slave" values {classname "npc_vortigaunt"} }
+		edit {classname "npc_human_security" values {classname "npc_citizen"} }
+		edit {classname "npc_zombie_security" values {classname "npc_zombine"} }
+		edit {classname "npc_zombie_scientist_torso" values {classname "npc_zombie_torso"} }
+		edit {classname "npc_zombie_scientist" values {classname "npc_zombie"} }
+		edit {classname "prop_flare" values {classname "prop_physics" model "models/props_junk/flare.mdl"} }
+		edit {classname "item_ammo_glock" values {classname "item_ammo_pistol"} }
+		edit {classname "item_weapon_crowbar" values {classname "weapon_crowbar"} }
+		edit {classname "item_weapon_glock" values {classname "weapon_pistol"} }
+		edit {classname "item_weapon_frag" values {classname "weapon_frag"} }
+		edit {classname "item_crate" values {classname "item_item_crate"} }
+		edit {classname "item_weapon_357" values {classname "weapon_357"} }
+		edit {classname "npc_sentry_ceiling" values {classname "npc_turret_ceiling" spawnflags "32"} }
+		edit {classname "fog_volume" values {classname "func_smokevolume"} }
+		edit {classname "npc_human_grunt" values {classname "npc_combine_s"} }
+		edit {classname "npc_sentry_ground" values {classname "npc_turret_floor" spawnflags "0"} }
+		edit {classname "item_weapon_mp5" values {classname "weapon_mp5k"} }
+		edit {classname "item_weapon_shotgun" values {classname "weapon_shotgun"} }
+		edit {classname "grenade_tripmine" values {classname "weapon_slam"} }
+		edit {classname "item_ammo_mp5" values {classname "item_ammo_smg1"} }
+		edit {classname "item_ammo_shotgun" values {classname "item_box_buckshot"} }
+		edit {classname "item_grenade_mp5" values {classname " item_ammo_smg1_grenade"} }
+		edit {classname "func_conveyor_bms" values {classname "func_conveyor"} }
+		edit {classname "npc_human_commander" values {classname "npc_combine_s" model "models/combine_super_soldier.mdl" additionalequipment "weapon_ar2"} }//add model in lmp
+		edit {classname "npc_human_medic" values {classname "npc_combine_s" model "models/combine_soldier_prisonguard.mdl" additionalequipment "weapon_ar2"} }
+		edit {classname "npc_osprey" values {classname "npc_combine_dropship"} }
+//--
+
+//TEMP RELATIONSHIPS
+		create {classname "ai_relationship"
+			values
+			{
+				subject "npc_vortigaunt"
+				target	"!player"
+				disposition "1"
+				rank	"99"
+				StartActive "1"
+				Reciprocal	"1"
+			}
+		}
+//Starting Equips
 		create {classname "info_player_equip"
 			values
 			{
