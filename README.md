@@ -1,26 +1,23 @@
-[Synergy] Black Mesa:S Edt Files
+[Synergy] Black Mesa Edt Files
 ===========
-Hello, these are the *(WORK IN PROGRESS)* .edt and .inc files for Black Mesa Source.
+Hello, these are the `.edt` and `.inc` files for Black Mesa Source.
 
 These edts are unofficial, and is a 3rd Party Project!
 
 **FEEL FREE TO CONTRIBUTE**
 
-##How to: Make a BMS Synergy Server
-- Download the BMS archive at the [Black Mesa Website(http://www.blackmesasource.com/#download)
-- Extract it to a BMS folder, put the BMS folder in the *common* directory
-- Your Synergy Server Directory should look like this
+## How to: Make a BMS Synergy Server
+- Download and Install Black Mesa from Steam: [Black Mesa - Steam](http://store.steampowered.com/app/362890/Black_Mesa)
+- Your Synergy Server Directory should look like this:
 ```
-common/BMS
+common/Black Mesa
 common/Half-Life 2
 common/Synergy
 ```
-- Download the **Unofficial BMS EDTS** as a *.zip* and place the *.edt* and *.inc* files into your ***Synergy*** *maps* folder.
-- Add ***bms*** to the *mount.cache* file
-- Set the startup map to *bm_c0a0a*
-- Run The Server
-- ?????
-- Profit.
+- In the `common/Synergy/synergy/custom` folder, make a new folder called `BMS`. In that folder, make a folder named `maps`.
+- Copy the *.edt* and *.inc* files into the maps folder.
+- Run The Server with the startup map set to `d1_trainstation_01`
+- When the Server is loaded, run the command `changelevel "blackmesa" "bm_c0a0a"`
 
 **Bugs:**
 - No Sound (Only Ambient Sound)
